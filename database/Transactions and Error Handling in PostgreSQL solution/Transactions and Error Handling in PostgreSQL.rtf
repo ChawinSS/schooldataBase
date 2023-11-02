@@ -1,0 +1,948 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fnil\fcharset0 Menlo-Regular;
+}
+{\colortbl;\red255\green255\blue255;\red7\green19\blue34;\red255\green255\blue255;\red235\green235\blue242;
+\red25\green190\blue45;\red23\green23\blue23;\red202\green202\blue202;\red17\green136\blue207;\red212\green212\blue212;
+\red209\green51\blue120;\red205\green94\blue6;\red226\green226\blue234;}
+{\*\expandedcolortbl;;\cssrgb\c1961\c9804\c17647;\cssrgb\c100000\c100000\c100000;\cssrgb\c93725\c93725\c96078;
+\cssrgb\c0\c77255\c23137;\cssrgb\c11765\c11765\c11765;\cssrgb\c83137\c83137\c83137;\cssrgb\c0\c60784\c84706;\cssrgb\c86275\c86275\c86275;
+\cssrgb\c86275\c30196\c54510;\cssrgb\c84706\c45098\c0;\cssrgb\c90980\c90980\c93333;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f0\b\fs40 \cf2 \cb3 \expnd0\expndtw0\kerning0
+Making our first transaction\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\f1\b0\fs28 \cf2 \cb3 Now you're ready to build your first transaction. As mentioned in the slides, you are working with data from the FFEIC, which is the organization in the US that sets bank standards and reporting formats. Recently they changed the rules for reporting if you provide consumer deposit accounts to being true only if you have more than $5,000,000 in brokered deposits.\cb1 \
+\cb3 Let's use a transaction to make that update safely. The "Provides Consumer Deposits" flag is in the 
+\fs24 \cb4 RCONP752
+\fs28 \cb3  column and the brokered deposits is in the 
+\fs24 \cb4 RCON2365
+\fs28 \cb3  column.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Begin a new transaction\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb6 \strokec8 BEGIN\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb6 \strokec5 -- Update RCOP752 to true if RCON2365 is over 5000000\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 RCONP752\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'true'\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON2365\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 5000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb6 \strokec5 -- Commit the transaction\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb6 \strokec8 COMMIT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb6 \strokec5 -- Select a count of records now true\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\partightenfactor0
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf11 \strokec11 COUNT\cf9 \strokec9 (\cf3 \strokec3 RCONP752\cf9 \strokec9 )\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCONP752\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'true'\cf9 \strokec9 ;\
+\
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f0\b\fs40 \cf2 \cb3 \outl0\strokewidth0 Multiple statement transactions\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\f1\b0\fs28 \cf2 \cb3 Now let's use multiple statements in a transaction to set a flag in 
+\fs24 \cb4 FIELD48
+\fs28 \cb3  based on if it holds US state government assets represented in 
+\fs24 \cb4 RCON2203
+\fs28 \cb3 , foreign assets represented in 
+\fs24 \cb4 RCON2236
+\fs28 \cb3 , or both.\cb1 \
+\cb3 The values for 
+\fs24 \cb4 FIELD48
+\fs28 \cb3  should be 
+\fs24 \cb4 'US-STATE-GOV'
+\fs28 \cb3 , 
+\fs24 \cb4 'FOREIGN'
+\fs28 \cb3 , or 
+\fs24 \cb4 'BOTH'
+\fs28 \cb3  respectively. Flag fields like this are common in government data sets, and are great for categorizing records.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Begin a new transaction\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update FIELD48 flag status if US State Government deposits are held\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'US-STATE-GOV'\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 0\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update FIELD48 flag status if Foreign deposits are held\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'FOREIGN'\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON2236\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 0\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update FIELD48 flag status if US State Government and Foreign deposits are held\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'BOTH'\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 0\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 AND\cf7 \strokec7  \cf3 \strokec3 RCON2236\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 0\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Commit the transaction\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 COMMIT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Select a count of records where FIELD48 is now BOTH\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf11 \strokec11 COUNT\cf9 \strokec9 (\cf3 \strokec3 FIELD48\cf9 \strokec9 )\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'BOTH'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Single statement transactions\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Now you will work with a single statement transaction. Some types of saving accounts hold money that cannot be withdrawn on demand for individuals and corporations. The amount of the heldback money is stored in the 
+\fs24 \cb4 RCONB550
+\fs28 \cb3  field. These types of accounts promote bank stability and generate dependable revenue for the financial institution via fees and loan proceeds. Let's update 
+\fs24 \cb4 FIELD48
+\fs28 \cb3  to be 
+\fs24 \cb4 '1'
+\fs28 \cb3  for each of these institutions to signify that they have this stability when it's over $100M.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Update records to indicate nontransactionals over 100,000,000\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 '1'\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCONB550\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 100000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Select a count of records where the flag field is not 1\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf11 \strokec11 COUNT\cf9 \strokec9 (\cf8 \strokec8 *\cf9 \strokec9 )\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 !=\cf7 \strokec7  \cf10 \strokec10 '1'\cf7 \strokec7  \cf8 \strokec8 or\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 is\cf7 \strokec7  \cf8 \strokec8 null\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+- 3 option\
+\pard\pardeftab720\sa105\partightenfactor0
+
+\f1\fs42 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Selecting isolation levels\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Which isolation level protects from dirty read (reading uncommitted data), non-repeatable read (Same query different results), phantom read (Same where clause reads different data), and the serialization anomaly (different commit order produces different results)?\
+- 3 option\
+\pard\pardeftab720\sa160\partightenfactor0
+
+\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 Using an isolation level\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 As seen in the video, sometimes it's important to be able to select an isolation level for an individual transaction. It's best to use 
+\fs24 \cb4 START TRANSACTION
+\fs28 \cb3  to do this which is an alias of 
+\fs24 \cb4 BEGIN TRANSACTION
+\fs28 \cb3  to make it clear something is different. You can specify an 
+\fs24 \cb4 ISOLATION LEVEL
+\fs28 \cb3  when starting the transaction.\cb1 \
+\cb3 Here we are going to use 
+\fs24 \cb4 REPEATABLE READ
+\fs28 \cb3  which protects us from dirty reads, nonrepeatable reads, and phantom reads. In the FFEIC data, 
+\fs24 \cb4 RCON2210
+\fs28 \cb3  is the demand deposits field, and tracks all outstanding checking accounts, bank-issued checks and unposted credits. They can be a liability to a bank if there was a funds rush for any reason. Let's find all those banks with over $100,000,000 in demand deposits.\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Create a new transaction with an isolation level of repeatable read\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 START\cf7 \strokec7  \cf8 \strokec8 TRANSACTION\cf7 \strokec7  \cf8 \strokec8 ISOLATION\cf7 \strokec7  \cf8 \strokec8 LEVEL\cf7 \strokec7  \cf8 \strokec8 REPEATABLE\cf7 \strokec7  \cf8 \strokec8 READ\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Count of records over 100000000\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf11 \strokec11 COUNT\cf9 \strokec9 (\cf3 \strokec3 RCON2210\cf9 \strokec9 )\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON2210\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 100000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Count of records over 100000000\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf11 \strokec11 COUNT\cf9 \strokec9 (\cf3 \strokec3 RCON2210\cf9 \strokec9 )\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON2210\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 100000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Commit the transaction\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 COMMIT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Isolation levels and transactions\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs24 \AppleTypeServices \cf2 \cb4 SERIALIZABLE
+\fs28 \cb3  is an isolation level that takes a snapshot of the record when the first query or update statement is issued, and errors if the data is altered in any way outside of the transaction. Note that the transaction can do other work, such as declare variables, prior to the first query.\cb1 \
+\cb3 You'll be using the FFIEC dataset again to work with data where the annual change in savings deposits 
+\fs24 \cb4 RCON0352
+\fs28 \cb3  is affected by a large offset.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Create a new transaction with a serializiable isolation level\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 START\cf7 \strokec7  \cf8 \strokec8 TRANSACTION\cf7 \strokec7  \cf8 \strokec8 ISOLATION\cf7 \strokec7  \cf8 \strokec8 LEVEL\cf7 \strokec7  \cf8 \strokec8 SERIALIZABLE\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update records with a 50% reduction if greater than 100000\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 RCON0352\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf3 \strokec3 RCON0352\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf10 \strokec10 0.5\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON0352\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 100000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Commit the transaction\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 COMMIT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Select a count of records still over 100000\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf11 \strokec11 COUNT\cf9 \strokec9 (\cf3 \strokec3 RCON0352\cf9 \strokec9 )\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON0352\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 100000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Using rollbacks\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Recently the FFIEC changed the reporting requirement for bank's that provide consumer deposit accounts if they have more than $5,000,000 in brokered deposits. Let's use a transaction to make that update safely. The "Provides Consumer Deposits" flag is in the 
+\fs24 \cb4 RCONP752
+\fs28 \cb3  column and the amount of brokered deposits is in the 
+\fs24 \cb4 RCON2365
+\fs28 \cb3  column.\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Begin a new transaction\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update RCONP752 to true if RCON2365 is over 5000\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 RCONP752\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'true'\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON2365\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 5000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Oops that was supposed to be 5000000 undo the statement\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 ROLLBACK\cf9 \strokec9 ;\
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa160\partightenfactor0
+\ls1\ilvl0
+\f1\fs28 \cf2 \cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+Update the 
+\fs24 \cb4 RCONP752
+\fs28 \cb3  field to be 
+\fs24 \cb4 'true'
+\fs28 \cb3  if 
+\fs24 \cb4 RCON2365
+\fs28 \cb3  > 5000000 and end the transaction.\cb1 \
+\ls1\ilvl0\cb3 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+Select the count of rows where 
+\fs24 \cb4 RCONP752
+\fs28 \cb3  is 
+\fs24 \cb4 'true'
+\fs28 \cb3 .\
+\ls1\ilvl0
+\f2\fs32 \cf7 \cb1 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}\cf5 \cb6 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec5 -- Update RCOP752 to true if RCON2365 is over 5000000\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\partightenfactor0
+\ls1\ilvl0\cf8 \cb6 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\ls1\ilvl0\cf8 \cb6 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 RCONP752\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'true'\cf7 \cb1 \strokec7 \
+\ls1\ilvl0\cf8 \cb6 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON2365\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 5000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec7 \
+\ls1\ilvl0\cf5 \cb6 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec5 -- Commit the transaction\cf7 \cb1 \strokec7 \
+\ls1\ilvl0\cf8 \cb6 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec8 COMMIT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec7 \
+\ls1\ilvl0\cf5 \cb6 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec5 -- Select a count of records now true\cf7 \cb1 \strokec7 \
+\ls1\ilvl0\cf8 \cb6 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec8 SELECT\cf7 \strokec7  \cf11 \strokec11 COUNT\cf9 \strokec9 (\cf3 \strokec3 RCONP752\cf9 \strokec9 )\cf7 \cb1 \strokec7 \
+\ls1\ilvl0\cf8 \cb6 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\ls1\ilvl0\cf8 \cb6 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCONP752\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'true'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Multistatement Rollbacks\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Now let's use multiple statements in a transaction to set a flag in 
+\fs24 \cb4 FIELD48
+\fs28 \cb3  based on if it holds US state government assets represented in 
+\fs24 \cb4 RCON2203
+\fs28 \cb3 , foreign assets represented in 
+\fs24 \cb4 RCON2236
+\fs28 \cb3 , or both. The values for 
+\fs24 \cb4 FIELD48
+\fs28 \cb3  should be 
+\fs24 \cb4 'US-STATE-GOV'
+\fs28 \cb3 , 
+\fs24 \cb4 'FOREIGN'
+\fs28 \cb3 , or 
+\fs24 \cb4 'BOTH'
+\fs28 \cb3  respectively. However, You've made a mistake in the statement for both.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Begin a new transaction\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update FIELD48 flag status if US State Government deposits are held\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'US-STATE-GOV'\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 0\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update FIELD48 flag status if Foreign deposits are held\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'FOREIGN'\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON2236\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 0\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update FIELD48 flag status if US State Government and Foreign deposits are held\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'BOOTH'\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON2236\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 0\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 AND\cf7 \strokec7  \cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 0\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Undo the mistake\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 ROLLBACK\cf9 \strokec9 ;\cf7 \strokec7  \cb1 \
+\
+\cf5 \cb6 \strokec5 -- Select a count of records that are booth (it should be 0)\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf11 \strokec11 COUNT\cf9 \strokec9 (\cf3 \strokec3 FIELD48\cf9 \strokec9 )\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'BOOTH'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Working with a single savepoint\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Banks that carry large value in Money Market Deposit Accounts (MMDA) are often resilient to downturns in the economy. In order to classify banks, we'll use a flag field such as 
+\fs24 \cb4 FIELD48
+\fs28 \cb3  to store information useful for further processing. Let's flag banks with over 5000000.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf8 \cb6 \outl0\strokewidth0 \strokec8 BEGIN\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Set the flag to indicate that they hold MMDAs where more than $5 million\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'MMDA'\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON6810\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 5000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Set a savepoint\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 SAVEPOINT\cf7 \strokec7  \cf3 \strokec3 mmda_flag_set\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Rollback the whole transaction\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 ROLLBACK\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf8 \cb6 \strokec8 COMMIT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Rolling back with a savepoint\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Building upon the last exercise, it turns out that banks with more than $6 million in MMDAs are twice as likely to sustain during a downturn than those with between $5 and 6 million in that same asset class. Here I've made a mistake in the sample code, and we need to rollback to the save point to maintain data integrity.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf8 \cb6 \outl0\strokewidth0 \strokec8 BEGIN\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update FIELD48 to indicate a positive MMDA when more than $6 million.\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cf8 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'MMDA+'\cf7 \strokec7  \cf8 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCON6810\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 6000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Set a savepoint\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 SAVEPOINT\cf7 \strokec7  \cf3 \strokec3 mmdaplus_flag_set\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Mistakenly set the flag to MMDA+ where the value is greater than $5 million\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cf8 \strokec8 set\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'MMDA+'\cf7 \strokec7  \cf8 \strokec8 where\cf7 \strokec7  \cf3 \strokec3 RCON6810\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 5000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Roll back to savepoint\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 ROLLBACK\cf7 \strokec7  \cf8 \strokec8 TO\cf7 \strokec7  \cf3 \strokec3 mmdaplus_flag_set\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf8 \cb6 \strokec8 COMMIT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Select count of records where the flag is MMDA+\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf11 \strokec11 count\cf9 \strokec9 (\cf3 \strokec3 FIELD48\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 from\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cf8 \strokec8 where\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'MMDA+'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Multiple savepoints\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 A risky area for banks during a distressed market is the number of maturing time deposits in the near future. It's highly likely that these timed deposits will be withdrawn to make other financial moves by the depositor. 
+\fs24 \cb4 RCONHK07 + RCONHK12
+\fs28 \cb3  stores those maturing in the next three months and 
+\fs24 \cb4 RCONHK08 + RCONHK13
+\fs28 \cb3  stores those expiring between 3 and 12 months.\cb1 \
+\cb3 If the total amounts in these columns are higher than $10 million it can be a drag on available funds to cover withdrawals and would receive a negative rating. Additionally, if there is less than $2 million, it has been shown to be a positive factor.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf8 \cb6 \outl0\strokewidth0 \strokec8 BEGIN\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update FIELD48 to indicate a positive maturity rating when less than $2 million of maturing deposits.\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'mature+'\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCONHK07\cf7 \strokec7  \cf8 \strokec8 +\cf7 \strokec7  \cf3 \strokec3 RCONHK12\cf7 \strokec7  \cf8 \strokec8 +\cf7 \strokec7  \cf3 \strokec3 RCONHK08\cf7 \strokec7  \cf8 \strokec8 +\cf7 \strokec7  \cf3 \strokec3 RCONHK13\cf7 \strokec7  \cf8 \strokec8 <\cf7 \strokec7  \cf10 \strokec10 2000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Set a savepoint\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 SAVEPOINT\cf7 \strokec7  \cf3 \strokec3 matureplus_flag_set\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update FIELD48 to indicate a negative maturity rating when between $2 and $10 million\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'mature-'\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCONHK07\cf7 \strokec7  \cf8 \strokec8 +\cf7 \strokec7  \cf3 \strokec3 RCONHK12\cf7 \strokec7  \cf8 \strokec8 +\cf7 \strokec7  \cf3 \strokec3 RCONHK08\cf7 \strokec7  \cf8 \strokec8 +\cf7 \strokec7  \cf3 \strokec3 RCONHK13\cf7 \strokec7  \cf8 \strokec8 BETWEEN\cf7 \strokec7  \cf10 \strokec10 2000000\cf7 \strokec7  \cf8 \strokec8 AND\cf7 \strokec7  \cf10 \strokec10 10000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Set a savepoint\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 SAVEPOINT\cf7 \strokec7  \cf3 \strokec3 matureminus_flag_set\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update FIELD48 to indicate a double negative maturity rating when more than $10 million\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'mature--'\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCONHK07\cf7 \strokec7  \cf8 \strokec8 +\cf7 \strokec7  \cf3 \strokec3 RCONHK12\cf7 \strokec7  \cf8 \strokec8 +\cf7 \strokec7  \cf3 \strokec3 RCONHK08\cf7 \strokec7  \cf8 \strokec8 +\cf7 \strokec7  \cf3 \strokec3 RCONHK13\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 10000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf8 \cb6 \strokec8 COMMIT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Count the records where FIELD48 is a positive indicator\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf11 \strokec11 count\cf9 \strokec9 (\cf3 \strokec3 FIELD48\cf9 \strokec9 )\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'mature+'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 avepoints and rolling back\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Continuing to think about the amount of maturing time deposits in the near future. The ones over 250K have the most impact on the outcomes seen during the 2008 market.\cb1 \
+
+\fs24 \cb4 RCONHK12
+\fs28 \cb3  (>=250k) stores those maturing in the next three months and 
+\fs24 \cb4 RCONHK13
+\fs28 \cb3  (>=250k) stores those expiring between 3 and 12 months. If these are higher than $1 million dollars it can cause a funds shortage at a bank as these are typically larger customers of the bank who might also pull other assets. Again, there is a positive factor if these are less than $500K.\cb1 \
+\cb3 I've made a few mistakes in my code by setting the wrong value for those over $500 thousand!\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf8 \cb6 \outl0\strokewidth0 \strokec8 BEGIN\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update FIELD48 to indicate a positive maturity rathing when less than $500 thousand.\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'mature+'\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCONHK12\cf7 \strokec7  \cf8 \strokec8 +\cf7 \strokec7  \cf3 \strokec3 RCONHK13\cf7 \strokec7  \cf8 \strokec8 <\cf7 \strokec7  \cf10 \strokec10 500000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Set a savepoint\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 SAVEPOINT\cf7 \strokec7  \cf3 \strokec3 matureplus_flag_set\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update FIELD48 to indicate a negative maturity rathing when between $500 thousand and $1 million.\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'mature-'\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCONHK12\cf7 \strokec7  \cf8 \strokec8 +\cf7 \strokec7  \cf3 \strokec3 RCONHK13\cf7 \strokec7  \cf8 \strokec8 BETWEEN\cf7 \strokec7  \cf10 \strokec10 500000\cf7 \strokec7  \cf8 \strokec8 AND\cf7 \strokec7  \cf10 \strokec10 1000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Set a savepoint\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 SAVEPOINT\cf7 \strokec7  \cf3 \strokec3 matureminus_flag_set\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Accidentailly update FIELD48 to indicate a double negative maturity rating when more than 100K\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'mature--'\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCONHK12\cf7 \strokec7  \cf8 \strokec8 +\cf7 \strokec7  \cf3 \strokec3 RCONHK13\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 100000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Rollback to before the last mistake\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 ROLLBACK\cf7 \strokec7  \cf8 \strokec8 TO\cf7 \strokec7  \cf3 \strokec3 matureminus_flag_set\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Select count of records with a double negative indicator\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf11 \strokec11 count\cf9 \strokec9 (\cf3 \strokec3 FIELD48\cf9 \strokec9 )\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 from\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'mature--'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Working with repeatable read\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 With the video in mind, let's do some hands on work with a repeatable read transaction. We want to set a "stability" factor for a bank's in-house assets if they allow consumer deposits. We'll do this by setting a custom field, 
+\fs24 \cb4 FIELD48
+\fs28 \cb3 , equal to a retainer value if the bank allows consumer deposit accounts as indicated in 
+\fs24 \cb4 RCONP752
+\fs28 \cb3 .\cb1 \
+\cb3 Interference from an external transaction would alter the application of our factor. Repeatable read protects your transaction from outside sources changing data that was available to us when we ran our first query in the transaction.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Create a new transaction with a repeatable read isolation level\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 START\cf7 \strokec7  \cf8 \strokec8 TRANSACTION\cf7 \strokec7  \cf8 \strokec8 ISOLATION\cf7 \strokec7  \cf8 \strokec8 LEVEL\cf7 \strokec7  \cf8 \strokec8 REPEATABLE\cf7 \strokec7  \cf8 \strokec8 READ\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update records for banks that allow consumer deposit accounts\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 100\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCONP752\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'true'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update records for banks that do not allow consumer deposit accounts\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 FIELD48\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 50\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 RCONP752\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'false'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Commit the transaction\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 COMMIT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs36 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Question\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Considering the previous exercise what would happen if a query outside our transaction altered the value of 
+\fs24 \cb4 FIELD48
+\fs28 \cb3  on a bank that didn't allow deposits between the two statements in our transaction?\
+- 1 option\
+\
+\pard\pardeftab720\sa160\partightenfactor0
+
+\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 Savepoint's effect on isolation levels\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Now that you've explored savepoints, let's use them to set up a series of transactions that all need to work from the same initial snapshot of the data. 
+\fs24 \cb4 REPEATABLE READ
+\fs28 \cb3  is an isolation level that enables us to give each statement inside the transaction the same data as the first statement operated on instead of the data as a result of the prior statement(s).\cb1 \
+\cb3 Recently, the FFEIC allowed for a progressive curtailment of foreign deposits, field 
+\fs24 \cb4 RCON2203
+\fs28 \cb3  in thousands, in the dataset. The new curtailment is 35% for more than $1 billion, 25% for more than $500 million, and 13% for more than $300 million. It's possible to order these statements to avoid reducing the data more than once. However, statements have the data before any adjustments with 
+\fs24 \cb4 REPEATABLE READ
+\fs28 \cb3 .\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Create a new transaction with a repeatable read isolation level\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 START\cf7 \strokec7  \cf8 \strokec8 TRANSACTION\cf7 \strokec7  \cf8 \strokec8 ISOLATION\cf7 \strokec7  \cf8 \strokec8 LEVEL\cf7 \strokec7  \cf8 \strokec8 REPEATABLE\cf7 \strokec7  \cf8 \strokec8 READ\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update records with a 35% reduction if greater than 1000000000\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf11 \strokec11 CAST\cf9 \strokec9 (\cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 AS\cf7 \strokec7  \cf8 \strokec8 FLOAT\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf10 \strokec10 .65\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf11 \strokec11 CAST\cf9 \strokec9 (\cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 AS\cf7 \strokec7  \cf8 \strokec8 FLOAT\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 1000000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf3 \cb6 \strokec3 SAVEPOINT\cf7 \strokec7  \cf3 \strokec3 million\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update records with a 25% reduction if greater than 500000000\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf11 \strokec11 CAST\cf9 \strokec9 (\cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 AS\cf7 \strokec7  \cf8 \strokec8 FLOAT\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf10 \strokec10 .75\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf11 \strokec11 CAST\cf9 \strokec9 (\cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 AS\cf7 \strokec7  \cf8 \strokec8 FLOAT\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 500000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf3 \cb6 \strokec3 SAVEPOINT\cf7 \strokec7  \cf3 \strokec3 five_hundred\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Update records with a 13% reduction if greater than 300000000\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf11 \strokec11 CAST\cf9 \strokec9 (\cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 AS\cf7 \strokec7  \cf8 \strokec8 FLOAT\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf10 \strokec10 .87\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHERE\cf7 \strokec7  \cf11 \strokec11 CAST\cf9 \strokec9 (\cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 AS\cf7 \strokec7  \cf8 \strokec8 FLOAT\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 >\cf7 \strokec7  \cf10 \strokec10 300000000\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf3 \cb6 \strokec3 SAVEPOINT\cf7 \strokec7  \cf3 \strokec3 three_hundred\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Commit the transaction\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 COMMIT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Select SUM the RCON2203 field\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf11 \strokec11 SUM\cf9 \strokec9 (\cf11 \strokec11 CAST\cf9 \strokec9 (\cf3 \strokec3 RCON2203\cf7 \strokec7  \cf8 \strokec8 AS\cf7 \strokec7  \cf8 \strokec8 FLOAT\cf9 \strokec9 ))\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 ffiec_reci\cf7 \strokec7  \cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Writing do statements\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Commonly when cleaning data, we'll get data that will have bad dates in it. This would cause an exception and halt our SQL statement; however, by using a 
+\fs24 \cb4 DO
+\fs28 \cb3  function with an exception handler, our statement will run to completion. Let's see how we can handle that type of exception with the 
+\fs24 \cb4 patients
+\fs28 \cb3  table and the 
+\fs24 \cb4 created_on
+\fs28 \cb3  column. This will also give us a chance to use a 
+\fs24 \cb4 DO
+\fs28 \cb3  style function.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Create a DO $$ function\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 DO\cf7 \strokec7  \cf10 \strokec10 $$\cf7 \strokec7  \cb1 \
+\cf5 \cb6 \strokec5 -- BEGIN a transaction block\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf7 \strokec7  \cb1 \
+\cb6     \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 patients\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 a1c\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 glucose\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 fasting\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 created_on\cf9 \strokec9 )\cf7 \strokec7  \cb1 \
+\cb6     \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 5.8\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 89\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 TRUE\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 '37-03-2020 01:15:54'\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Add an EXCEPTION                                                         \cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 EXCEPTION\cf7 \strokec7  \cb1 \
+\cf5 \cb6 \strokec5 -- For all all other type of errors\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 others\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \strokec7  \cb1 \
+\cb6     \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 detail\cf9 \strokec9 )\cf7 \strokec7  \cb1 \
+\cb6     \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 'failed to insert'\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 'bad date'\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 END\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Make sure to specify the language\cf7 \cb1 \strokec7 \
+\cf10 \cb6 \strokec10 $$\cf7 \strokec7  \cf8 \strokec8 language\cf7 \strokec7  \cf10 \strokec10 'plpgsql'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Select all the errors recorded\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf8 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 errors\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+- 1 option\
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Handling exceptions\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 In the slides, we discussed providing proper context for resolution. One area that is often overlooked when recording messages is the deeper reasoning for them. Oftentimes errors are generic like "Bad value" or "Invalid date." However, we can use details and context to enrich those messages.\cb1 \
+\cb3 Here we are going to work with A1C which is the percentage of red blood cells that have sugar attached to the hemoglobin. Typically fasting ranges are below 5.7% for non-affected patients, 5.7% to 6.4% for prediabetes, and over 6.5% is typically an indicator of unmanaged diabetes.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Add a DO function\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 DO\cf7 \strokec7  \cf10 \strokec10 $$\cf7 \strokec7  \cb1 \
+\cf5 \cb6 \strokec5 -- BEGIN a transaction block\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf7 \strokec7  \cb1 \
+\cb6     \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 patients\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 a1c\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 glucose\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 fasting\cf9 \strokec9 )\cf7 \strokec7  \cb1 \
+\cb6     \cf8 \strokec8 values\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 20\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 89\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 TRUE\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Add an EXCEPTION                   \cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 EXCEPTION\cf7 \strokec7  \cb1 \
+\cf5 \cb6 \strokec5 -- Catch all exception types\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 others\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 detail\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 context\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 VALUES\cf7 \strokec7  \cb1 \
+\cb6   \cf9 \strokec9 (\cf7 \cb1 \strokec7 \
+\cb6     \cf10 \strokec10 'failed to insert'\cf9 \strokec9 ,\cf7 \strokec7  \cb1 \
+\cb6     \cf10 \strokec10 'This a1c value is higher than clinically accepted norms.'\cf9 \strokec9 ,\cf7 \strokec7  \cb1 \
+\cb6     \cf10 \strokec10 'a1c is typically less than 14'\cf7 \cb1 \strokec7 \
+\cb6   \cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 END\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Make sure to specify the language\cf7 \cb1 \strokec7 \
+\cf10 \cb6 \strokec10 $$\cf7 \strokec7  \cf8 \strokec8 language\cf7 \strokec7  \cf10 \strokec10 'plpgsql'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Select all the errors recorded\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf8 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 errors\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Multiple exception blocks\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Since 
+\fs24 \cb4 ROLLBACK TO
+\fs28 \cb3  and 
+\fs24 \cb4 SAVEPOINT
+\fs28 \cb3  can not be used in functions with exception handlers, we have a way to emulate the same behavior though using nested blocks. These nested blocks are used to group and order the statements in the order that they depend on each other. Here you are going to insert a block of records with an exception handler which emulates a 
+\fs24 \cb4 SAVEPOINT
+\fs28 \cb3 , then update a record with an exception handler. That update statement will error, and the exception handler will automatically rollback just that block.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Make a DO function\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 DO\cf7 \strokec7  \cf10 \strokec10 $$\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Open a transaction block\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- Open a nested block\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 patients\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 a1c\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 glucose\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 fasting\cf9 \strokec9 )\cf7 \strokec7  \cb1 \
+\cb6         \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 5.6\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 93\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 TRUE\cf9 \strokec9 ),\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 6.3\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 111\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 TRUE\cf9 \strokec9 ),(\cf10 \strokec10 4.7\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 65\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 TRUE\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- Catch all exception types\cf7 \cb1 \strokec7 \
+\cb6     \cf3 \strokec3 EXCEPTION\cf7 \strokec7  \cf8 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 others\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 'failed to insert'\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- End nested block\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 END\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- Begin the second nested block\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 patients\cf7 \strokec7  \cf8 \strokec8 SET\cf7 \strokec7  \cf3 \strokec3 fasting\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'true'\cf7 \strokec7  \cf8 \strokec8 WHERE\cf7 \strokec7  \cf3 \strokec3 id\cf8 \strokec8 =\cf10 \strokec10 1\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- Catch all exception types\cf7 \cb1 \strokec7 \
+\cb6     \cf3 \strokec3 EXCEPTION\cf7 \strokec7  \cf8 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 others\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 'Inserted string into boolean.'\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- End the second nested block\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 END\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- END the outer block\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 END\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf10 \cb6 \strokec10 $$\cf7 \strokec7  \cf8 \strokec8 language\cf7 \strokec7  \cf10 \strokec10 'plpgsql'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf8 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 errors\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa105\partightenfactor0
+
+\f1\fs42 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Understanding rollbacks and savepoints\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Which of the following statements do not allow you to use 
+\fs24\fsmilli12250 \cf2 \cb12 ROLLBACK
+\fs28 \cf2 \cb3  and 
+\fs24\fsmilli12250 \cf2 \cb12 SAVEPOINT
+\fs28 \cf2 \cb3 ?\
+- 6 option\
+\pard\pardeftab720\sa160\partightenfactor0
+
+\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 Capturing specific exceptions\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Let's build a DO function that captures when glucose is set to null, and logs a message stating explicitly that Glucose can not be null.\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Make a DO function\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 DO\cf7 \strokec7  \cf10 \strokec10 $$\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Open a transaction block\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 patients\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 a1c\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 glucose\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 fasting\cf9 \strokec9 )\cf7 \strokec7  \cb1 \
+\cb6     \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 7.5\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 null\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 TRUE\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Catch an Exception                                                               \cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 EXCEPTION\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- Make it catch not_null_constraint exception types\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 not_null_violation\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- Insert the proper msg and detail\cf7 \cb1 \strokec7 \
+\cb6        \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 detail\cf9 \strokec9 )\cf7 \strokec7  \cb1 \
+\cb6        \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 'failed to insert'\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 'Glucose can not be null.'\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 END\cf10 \strokec10 $$\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6                                                                      \cb1 \
+\cf5 \cb6 \strokec5 -- Select all the errors recorded\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf8 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 errors\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Logging messages on specific exceptions\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 One of the best uses of catching multiple specific exception is to distinctly handle and log unique error message that help you understand exactly why an exception occurred. Let's apply this in a scenario where both error conditions are possible. We'll discuss after the exercise why it capture the specific message it did.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Make a DO function\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 DO\cf7 \strokec7  \cf10 \strokec10 $$\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Open a transaction block\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 patients\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 a1c\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 glucose\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 fasting\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 values\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 20\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 null\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 TRUE\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Catch an Exception                                                               \cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 EXCEPTION\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- Make it catch check_violation exception types\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 check_violation\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6         \cf5 \strokec5 -- Insert the proper msg and detail\cf7 \cb1 \strokec7 \
+\cb6        \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 detail\cf9 \strokec9 )\cf7 \cb1 \strokec7 \
+\cb6        \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 'failed to insert'\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 'A1C is higher than clinically accepted norms.'\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- Make it catch not_null_constraint exception types\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 not_null_violation\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6         \cf5 \strokec5 -- Insert the proper msg and detail\cf7 \cb1 \strokec7 \
+\cb6        \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 detail\cf9 \strokec9 )\cf7 \cb1 \strokec7 \
+\cb6        \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 'failed to insert'\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 'Glucose can not be null.'\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 END\cf10 \strokec10 $$\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6                                                                      \cb1 \
+\cf5 \cb6 \strokec5 -- Select all the errors recorded\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf8 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 errors\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Graceful degradation\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Now that you've seen how to handle and raise exceptions, how can you use that to gracefully fall back to save data points when they exceed database constraints or hit another error? Let's see how you can gracefully fall back to the maximum accepted value when we are out of range.\
+- 2 option\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Start a DO statement with $$ as the end marker\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 DO\cf7 \strokec7  \cf10 \strokec10 $$\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Begin a code block\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6      \cf5 \strokec5 -- Insert the data into patients\cf7 \cb1 \strokec7 \
+\cb6      \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 patients\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 a1c\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 glucose\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 fasting\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 values\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 20\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 800\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 False\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Catch a check_violation exception\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 EXCEPTION\cf7 \strokec7  \cf8 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 check_violation\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- RAISE the violation notice\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 'This A1C is not valid, should be between 0-13'\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- END the code block and declare the language\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 END\cf9 \strokec9 ;\cf7 \strokec7  \cb1 \
+\cf10 \cb6 \strokec10 $$\cf7 \strokec7  \cf8 \strokec8 language\cf7 \strokec7  \cf10 \strokec10 'plpgsql'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf8 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 errors\cf9 \strokec9 ;\
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa160\partightenfactor0
+\ls2\ilvl0
+\f1\fs28 \cf2 \cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+Add a statement into the exception clause to 
+\fs24 \cb4 INSERT
+\fs28 \cb3  a max A1C of 13, and another statement add to the errors saying you set A1C to the max of 13.\cb1 \
+\ls2\ilvl0
+\fs24 \cb4 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+SELECT
+\fs28 \cb3  all records in the errors table.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Start a DO statement with $$ as the end marker\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 DO\cf7 \strokec7  \cf10 \strokec10 $$\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Begin a code block\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6      \cf5 \strokec5 -- Insert the data into patients\cf7 \cb1 \strokec7 \
+\cb6      \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 patients\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 a1c\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 glucose\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 fasting\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 values\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 20\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 800\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 False\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Catch a check_violation exception\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 EXCEPTION\cf7 \strokec7  \cf8 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 check_violation\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- RAISE the violation notice\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 values\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 'This A1C is not valid, should be between 0-13'\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- INSERT the max A1C value\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 patients\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 a1c\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 glucose\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 fasting\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 13\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 800\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 False\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- Record an error that you overrode the prior data insert\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 'Set A1C to the maximum of 13'\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- END the code block and declare the language\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 END\cf9 \strokec9 ;\cf7 \strokec7  \cb1 \
+\cf10 \cb6 \strokec10 $$\cf7 \strokec7  \cf8 \strokec8 language\cf7 \strokec7  \cf10 \strokec10 'plpgsql'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf8 \strokec8 from\cf7 \strokec7  \cf3 \strokec3 errors\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\tx566\pardeftab720\sa160\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Getting stacked diagnostics\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Stacked diagnostics can get the internal PostgreSQL error message and exception details. Let's revisit our patients table and try to add an A1C that is above the testing limit. This will cause a check constraint exception that we can capture. We can use the stacked diagnostics in the exception handler to enrich our error recording.\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf3 \cb6 \outl0\strokewidth0 \strokec3 DO\cf7 \strokec7  \cf10 \strokec10 $$\cf7 \strokec7  \cb1 \
+\cf5 \cb6 \strokec5 -- Declare our variables\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 DECLARE\cf7 \cb1 \strokec7 \
+\cb6    \cf3 \strokec3 exc_message\cf7 \strokec7  \cf8 \strokec8 text\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6    \cf3 \strokec3 exc_detail\cf7 \strokec7  \cf8 \strokec8 text\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf7 \strokec7  \cb1 \
+\cb6     \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 patients\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 a1c\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 glucose\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 fasting\cf9 \strokec9 )\cf7 \strokec7  \cb1 \
+\cb6     \cf8 \strokec8 values\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 20\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 89\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 TRUE\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 EXCEPTION\cf7 \strokec7  \cb1 \
+\cf8 \cb6 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 others\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- Get the exception message and detail via stacked diagnostics\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 GET\cf7 \strokec7  \cf3 \strokec3 STACKED\cf7 \strokec7  \cf8 \strokec8 DIAGNOSTICS\cf7 \strokec7  \cb1 \
+\cb6         \cf3 \strokec3 exc_message\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf3 \strokec3 MESSAGE_TEXT\cf9 \strokec9 ,\cf7 \cb1 \strokec7 \
+\cb6         \cf3 \strokec3 exc_detail\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf3 \strokec3 PG_EXCEPTION_DETAIL\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6     \cf5 \strokec5 -- Record the exception message and detail in the errors table\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 detail\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 exc_message\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 exc_detail\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 END\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf10 \cb6 \strokec10 $$\cf7 \strokec7  \cf8 \strokec8 language\cf7 \strokec7  \cf10 \strokec10 'plpgsql'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\
+\cf5 \cb6 \strokec5 -- Select all the errors recorded\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf8 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 errors\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+2 option\
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Capturing a context stack\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Getting the stack context, which is like a stack trace in other languages, is a powerful way to debug complex and nested functions.\cb1 \
+\cb3 In the code below, we want to capture the stack context and record it in the exception handlers of both nested blocks. Then, we want to review its output in the errors table to help debug what's causing the exception in this function.\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf3 \cb6 \outl0\strokewidth0 \strokec3 DO\cf7 \strokec7  \cf10 \strokec10 $$\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 DECLARE\cf7 \cb1 \strokec7 \
+\cb6    \cf3 \strokec3 exc_message\cf7 \strokec7  \cf8 \strokec8 text\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6    \cf3 \strokec3 exc_details\cf7 \strokec7  \cf8 \strokec8 text\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6    \cf5 \strokec5 -- Declare a variable, exc_context to hold the exception context\cf7 \cb1 \strokec7 \
+\cb6    \cf3 \strokec3 exc_context\cf7 \strokec7  \cf8 \strokec8 text\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 patients\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 a1c\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 glucose\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 fasting\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 values\cf7 \strokec7  \cf9 \strokec9 (\cf10 \strokec10 5.6\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 93\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 TRUE\cf9 \strokec9 ),\cf7 \cb1 \strokec7 \
+\cb6             \cf9 \strokec9 (\cf10 \strokec10 6.3\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 111\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 TRUE\cf9 \strokec9 ),(\cf10 \strokec10 4.7\cf9 \strokec9 ,\cf7 \strokec7  \cf10 \strokec10 65\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 TRUE\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cb6     \cf3 \strokec3 EXCEPTION\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 others\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6         \cf5 \strokec5 -- Store the exception context in exc_context\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 GET\cf7 \strokec7  \cf3 \strokec3 STACKED\cf7 \strokec7  \cf8 \strokec8 DIAGNOSTICS\cf7 \strokec7  \cf3 \strokec3 exc_message\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf3 \strokec3 MESSAGE_TEXT\cf9 \strokec9 ,\cf7 \cb1 \strokec7 \
+\cb6                                 \cf3 \strokec3 exc_context\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf3 \strokec3 PG_EXCEPTION_CONTEXT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6         \cf5 \strokec5 -- Record both the msg and the context\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 context\cf9 \strokec9 )\cf7 \strokec7  \cb1 \
+\cb6            \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 exc_message\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 exc_context\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 END\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 UPDATE\cf7 \strokec7  \cf3 \strokec3 patients\cf7 \strokec7  \cf8 \strokec8 set\cf7 \strokec7  \cf3 \strokec3 fasting\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'true'\cf7 \strokec7  \cf8 \strokec8 where\cf7 \strokec7  \cf3 \strokec3 id\cf8 \strokec8 =\cf10 \strokec10 1\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6     \cf3 \strokec3 EXCEPTION\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 others\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6         \cf5 \strokec5 -- Store the exception detail in exc_details\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 GET\cf7 \strokec7  \cf3 \strokec3 STACKED\cf7 \strokec7  \cf8 \strokec8 DIAGNOSTICS\cf7 \strokec7  \cf3 \strokec3 exc_message\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf3 \strokec3 MESSAGE_TEXT\cf9 \strokec9 ,\cf7 \cb1 \strokec7 \
+\cb6                                 \cf3 \strokec3 exc_details\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf3 \strokec3 PG_EXCEPTION_DETAIL\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 INTO\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 detail\cf9 \strokec9 )\cf7 \strokec7  \cb1 \
+\cb6            \cf8 \strokec8 VALUES\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 exc_message\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 exc_details\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 END\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 END\cf10 \strokec10 $$\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf8 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 errors\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Creating named functions and declaring variables\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Now that you've seen a powerful debugging function in action, let's build one of your own. First, start by using defining the function signature which supplied the function name, any parameters, and a return type. After that point, it's the same as a 
+\fs24 \cb4 DO
+\fs28 \cb3  function.\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs32 \cf5 \cb6 \outl0\strokewidth0 \strokec5 -- Define our function signature\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 CREATE\cf7 \strokec7  \cf8 \strokec8 OR\cf7 \strokec7  \cf11 \strokec11 REPLACE\cf7 \strokec7  \cf8 \strokec8 FUNCTION\cf7 \strokec7  \cf3 \strokec3 debug_statement\cf9 \strokec9 (\cf7 \cb1 \strokec7 \
+\cb6   \cf3 \strokec3 sql_stmt\cf7 \strokec7  \cf8 \strokec8 TEXT\cf7 \cb1 \strokec7 \
+\cf9 \cb6 \strokec9 )\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Declare our return type\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 RETURNS\cf7 \strokec7  \cf3 \strokec3 BOOLEAN\cf7 \strokec7  \cf8 \strokec8 AS\cf7 \strokec7  \cf10 \strokec10 $$\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 DECLARE\cf7 \cb1 \strokec7 \
+\cb6         \cf3 \strokec3 exc_state\cf7 \strokec7    \cf8 \strokec8 TEXT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6         \cf3 \strokec3 exc_msg\cf7 \strokec7      \cf8 \strokec8 TEXT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6         \cf3 \strokec3 exc_detail\cf7 \strokec7   \cf8 \strokec8 TEXT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6         \cf3 \strokec3 exc_context\cf7 \strokec7  \cf8 \strokec8 TEXT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6             \cf5 \strokec5 -- Execute the statement passed in\cf7 \cb1 \strokec7 \
+\cb6             \cf8 \strokec8 EXECUTE\cf7 \strokec7  \cf3 \strokec3 sql_stmt\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6         \cf3 \strokec3 EXCEPTION\cf7 \strokec7  \cf8 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 others\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6             \cf8 \strokec8 GET\cf7 \strokec7  \cf3 \strokec3 STACKED\cf7 \strokec7  \cf8 \strokec8 DIAGNOSTICS\cf7 \cb1 \strokec7 \
+\cb6                 \cf3 \strokec3 exc_state\cf7 \strokec7    \cf8 \strokec8 =\cf7 \strokec7  \cf3 \strokec3 RETURNED_SQLSTATE\cf9 \strokec9 ,\cf7 \cb1 \strokec7 \
+\cb6                 \cf3 \strokec3 exc_msg\cf7 \strokec7      \cf8 \strokec8 =\cf7 \strokec7  \cf3 \strokec3 MESSAGE_TEXT\cf9 \strokec9 ,\cf7 \cb1 \strokec7 \
+\cb6                 \cf3 \strokec3 exc_detail\cf7 \strokec7   \cf8 \strokec8 =\cf7 \strokec7  \cf3 \strokec3 PG_EXCEPTION_DETAIL\cf9 \strokec9 ,\cf7 \cb1 \strokec7 \
+\cb6                 \cf3 \strokec3 exc_context\cf7 \strokec7  \cf8 \strokec8 =\cf7 \strokec7  \cf3 \strokec3 PG_EXCEPTION_CONTEXT\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6             \cf8 \strokec8 INSERT\cf7 \strokec7  \cf8 \strokec8 into\cf7 \strokec7  \cf3 \strokec3 errors\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 msg\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 state\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 detail\cf9 \strokec9 ,\cf7 \strokec7  \cf8 \strokec8 context\cf9 \strokec9 )\cf7 \strokec7  \cf8 \strokec8 values\cf7 \strokec7  \cf9 \strokec9 (\cf3 \strokec3 exc_msg\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 exc_state\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 exc_detail\cf9 \strokec9 ,\cf7 \strokec7  \cf3 \strokec3 exc_context\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cb6             \cf5 \strokec5 -- Return True to indicate the statement was debugged\cf7 \cb1 \strokec7 \
+\cb6             \cf8 \strokec8 RETURN\cf7 \strokec7  \cf8 \strokec8 True\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 END\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6         \cf5 \strokec5 -- Return False to indicate the statement was not debugged\cf7 \cb1 \strokec7 \
+\cb6         \cf8 \strokec8 RETURN\cf7 \strokec7  \cf8 \strokec8 False\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cb6     \cf8 \strokec8 END\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf10 \cb6 \strokec10 $$\cf7 \strokec7  \cf8 \strokec8 LANGUAGE\cf7 \strokec7  \cf3 \strokec3 plpgsql\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf3 \strokec3 debug_statement\cf9 \strokec9 (\cf10 \strokec10 'INSERT INTO patients (a1c, glucose, fasting) values (20, 89, TRUE);'\cf9 \strokec9 )\cf7 \cb1 \strokec7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f1\fs40 \AppleTypeServices\AppleTypeServicesF65539 \cf2 \cb3 \outl0\strokewidth0 Putting it all together\cb1 \
+\pard\pardeftab720\sa280\partightenfactor0
+
+\fs28 \AppleTypeServices \cf2 \cb3 Now you're ready to put together what you learned in Chapter 4 with the stacked diagnostics functions from the previous exercises. I've already created the 
+\fs24 \cb4 patients
+\fs28 \cb3  table from the prior exercise as well as the 
+\fs24 \cb4 debug_statement
+\fs28 \cb3  function. You'll begin by debugging another exception type. Then you'll combine a 
+\fs24 \cb4 DO
+\fs28 \cb3  function, SQL statements stored in a variable, and trigger debugging on an exception.\
+- 1 option\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa160\partightenfactor0
+\ls3\ilvl0\cf2 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+Run the statement stored as stmt.\cb1 \
+\ls3\ilvl0\cb3 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+Debug the statement on exception using debug_statement.\
+\pard\tx566\pardeftab720\sa160\partightenfactor0
+
+\f2\fs32 \cf7 \cb1 \outl0\strokewidth0 \strokec7 \
+\pard\pardeftab720\partightenfactor0
+\cf3 \cb6 \strokec3 DO\cf7 \strokec7  \cf10 \strokec10 $$\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Begin a code block\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 DECLARE\cf7 \cb1 \strokec7 \
+\cb6     \cf3 \strokec3 stmt\cf7 \strokec7  \cf8 \strokec8 VARCHAR\cf9 \strokec9 (\cf10 \strokec10 100\cf9 \strokec9 )\cf7 \strokec7  :\cf8 \strokec8 =\cf7 \strokec7  \cf10 \strokec10 'INSERT INTO patients (a1c, glucose, fasting) VALUES (20, 800, False)'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 BEGIN\cf7 \cb1 \strokec7 \
+\cb6      \cf5 \strokec5 -- Insert the data into patients by running the statement\cf7 \cb1 \strokec7 \
+\cb6      \cf8 \strokec8 EXECUTE\cf7 \strokec7  \cf3 \strokec3 stmt\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Catch a check_violation exception and perform the debug_statement function on it. \cf7 \cb1 \strokec7 \
+\cf3 \cb6 \strokec3 EXCEPTION\cf7 \strokec7  \cf8 \strokec8 WHEN\cf7 \strokec7  \cf3 \strokec3 OTHERS\cf7 \strokec7  \cf8 \strokec8 THEN\cf7 \cb1 \strokec7 \
+\cb6     \cf3 \strokec3 PERFORM\cf7 \strokec7  \cf3 \strokec3 debug_statement\cf9 \strokec9 (\cf3 \strokec3 stmt\cf9 \strokec9 );\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- END the code block and declare the language\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 END\cf9 \strokec9 ;\cf7 \strokec7  \cf10 \strokec10 $$\cf7 \strokec7  \cf8 \strokec8 language\cf7 \strokec7  \cf10 \strokec10 'plpgsql'\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\cf5 \cb6 \strokec5 -- Select from the errors table\cf7 \cb1 \strokec7 \
+\cf8 \cb6 \strokec8 SELECT\cf7 \strokec7  \cf8 \strokec8 *\cf7 \strokec7  \cf8 \strokec8 FROM\cf7 \strokec7  \cf3 \strokec3 errors\cf9 \strokec9 ;\cf7 \cb1 \strokec7 \
+\pard\tx566\pardeftab720\sa160\partightenfactor0
+\cf7 \
+\pard\pardeftab720\sa280\partightenfactor0
+\cf7 \
+\
+}
